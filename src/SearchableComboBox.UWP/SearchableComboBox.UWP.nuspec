@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata minClientVersion="3.2">
+        <id>HoveyTech.SearchableComboBox.UWP</id>
+        <version>0.1.1</version>
+        <authors>David Hovey</authors>
+        <description>ComboBox that allows for user filtering.</description>
+    </metadata>
+    <files>
+     	<file src="bin\Release\HoveyTech.SearchableComboBox.UWP.dll" target="lib\uap10.0" />
+        <file src="bin\Release\HoveyTech.SearchableComboBox.UWP.pdb" target="lib\uap10.0" />
+        <file src="bin\Release\HoveyTech.SearchableComboBox.UWP.pri" target="lib\uap10.0" />
+		
+        <file src="bin\Release\HoveyTech.SearchableComboBox.UWP\HoveyTech.SearchableComboBox.UWP.xr.xml" target="lib\uap10.0\HoveyTech.SearchableComboBox.UWP" />
+		<file src="bin\Release\HoveyTech.SearchableComboBox.UWP\Themes\Generic.xaml" target="lib\uap10.0\HoveyTech.SearchableComboBox.UWP\Themes" />
+    </files>
+</package>
