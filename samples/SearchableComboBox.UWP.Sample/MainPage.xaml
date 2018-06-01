@@ -1,0 +1,56 @@
+﻿<views:MvxWindowsPage
+    x:Class="SearchableComboBox.UWP.Sample.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SearchableComboBox.UWP.Sample"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uwp="using:HoveyTech.SearchableComboBox.UWP"
+    xmlns:views="using:MvvmCross.Uwp.Views"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel Orientation="Vertical"  Margin="100" Width="300"
+                    HorizontalAlignment="Left">
+            <TextBlock Text="Simple searchable:"></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{Binding Path=Simple.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{Binding Path=Simple.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSourceEmptyMessage="Custom empty notification message..."
+                                    ItemsSource="{Binding Path=Simple.List}">
+
+            </uwp:SearchableComboBox>
+
+            <TextBlock Text="Loading indicator:" Margin="0,50,0,0"></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{Binding Path=LoadingIndicator.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{Binding Path=LoadingIndicator.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding Path=LoadingIndicator.List}"
+                                    ItemsSourceEmptyMessage="{Binding Path=LoadingIndicator.NoItemsMessage}"
+                                    UseLoadingProgressRing="True"
+                                    PlaceholderText="Enter filter to see indicator..."
+                                    IsRefreshingItemsSource="{Binding Path=LoadingIndicator.IsSearching}" >
+
+            </uwp:SearchableComboBox>
+
+            <TextBlock Text="Flexible FilterText: " Margin="0,50,0,0"></TextBlock>
+            <TextBlock><Run Text="SelectedItem: "></Run><Run Text="{Binding Path=FlexibleFilterText.SelectedEntity}"></Run></TextBlock>
+            <TextBlock><Run Text="FilterText: "></Run><Run Text="{Binding Path=FlexibleFilterText.FilterText}"></Run></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{Binding Path=FlexibleFilterText.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{Binding Path=FlexibleFilterText.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{Binding Path=FlexibleFilterText.List}"
+                                    ItemsSourceEmptyMessage="{Binding Path=FlexibleFilterText.NoItemsMessage}"
+                                    UseLoadingProgressRing="True"
+                                    PlaceholderText="Type item or select from results..."
+                                    IsRefreshingItemsSource="{Binding Path=FlexibleFilterText.IsSearching}"
+                                    UseFilterTextAsUserInput="True"
+            ></uwp:SearchableComboBox>
+
+
+
+        </StackPanel>
+    </Grid>
+</views:MvxWindowsPage>
+

@@ -397,11 +397,13 @@
                                       x:Name="PopupBorder"
                                       HorizontalAlignment="Stretch">
                                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                    <ProgressRing x:Name="ProgressRing" Margin="0,15,0,0" IsActive="True" HorizontalAlignment="Center" />
-                                    <TextBlock x:Name="NoItemsTextBlock" TextAlignment="Center" HorizontalAlignment="Stretch" Margin="0,15,0,15" 
-                                               Text="No results to show, change you search filter to display more items." />
+                                    <Grid>
+                                        <ProgressRing x:Name="ProgressRing" Margin="0,7,0,7" IsActive="True" HorizontalAlignment="Center" 
+                                                      VerticalAlignment="Center" />
+                                        <TextBlock x:Name="NoItemsTextBlock" TextAlignment="Center" HorizontalAlignment="Stretch" Margin="0,7,0,7" 
+                                                   TextWrapping="Wrap" VerticalAlignment="Center" />
+                                    </Grid>
                                     <ScrollViewer x:Name="ScrollViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
-                                                 
                                                 HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}"
                                                 HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}"
                                                 VerticalScrollMode="{TemplateBinding ScrollViewer.VerticalScrollMode}"
