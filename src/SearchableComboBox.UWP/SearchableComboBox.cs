@@ -332,9 +332,12 @@ namespace HoveyTech.SearchableComboBox.UWP
 
         private static void FilterTextChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var control = (SearchableComboBox)dependencyObject;
+            var control = dependencyObject as SearchableComboBox;
 
-            var newFilterText = (string)e.NewValue;
+            if (control == null)
+                return;
+
+            var newFilterText = e?.NewValue as string;
 
             if (!string.IsNullOrEmpty(newFilterText))
             {

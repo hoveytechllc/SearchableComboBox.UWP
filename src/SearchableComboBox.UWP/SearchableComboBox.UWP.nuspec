@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata minClientVersion="3.2">
     <id>HoveyTech.SearchableComboBox.UWP</id>
-    <version>0.2.0</version>
+    <version>0.3.0</version>
     <authors>David Hovey</authors>
     <description>ComboBox that allows for user filtering.</description>
   </metadata>
