@@ -341,7 +341,8 @@ namespace HoveyTech.SearchableComboBox.UWP
 
             if (!string.IsNullOrEmpty(newFilterText))
             {
-                control._placeholderTextBlock.Visibility = Visibility.Collapsed;
+                if (control._placeholderTextBlock != null)
+                    control._placeholderTextBlock.Visibility = Visibility.Collapsed;
 
                 if (control.UseFilterTextAsUserInput)
                     control.ClearSelection();
