@@ -412,7 +412,7 @@
                                                 IsVerticalRailEnabled="{TemplateBinding ScrollViewer.IsVerticalRailEnabled}"
                                                 IsDeferredScrollingEnabled="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
                                                 BringIntoViewOnFocusChange="{TemplateBinding ScrollViewer.BringIntoViewOnFocusChange}"
-                                                  MaxHeight="400">
+                                                MaxHeight="{Binding FlyoutMaxHeight, RelativeSource={RelativeSource TemplatedParent}}">
                                         <ItemsPresenter x:Name="ItemsPresenter" />
                                     </ScrollViewer>
                                 </StackPanel>

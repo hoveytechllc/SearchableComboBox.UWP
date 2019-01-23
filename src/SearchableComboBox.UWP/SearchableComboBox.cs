@@ -105,9 +105,18 @@ namespace HoveyTech.SearchableComboBox.UWP
         public static readonly DependencyProperty UseFilterTextAsUserInputProperty = DependencyProperty.Register(
             nameof(UseFilterTextAsUserInput), typeof(bool), typeof(SearchableComboBox), new PropertyMetadata(false));
 
+        public static readonly DependencyProperty FlyoutMaxHeightProperty = DependencyProperty.Register(
+            nameof(FlyoutMaxHeight), typeof(int), typeof(SearchableComboBox), new PropertyMetadata(300));
+
         #endregion
 
         #region Properties
+
+        public int FlyoutMaxHeight
+        {
+            get => (int)GetValue(FlyoutMaxHeightProperty);
+            set => SetValue(FlyoutMaxHeightProperty, value);
+        }
 
         public bool UseFilterTextAsUserInput
         {

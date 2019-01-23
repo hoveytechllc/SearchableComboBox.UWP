@@ -48,6 +48,14 @@
                                     UseFilterTextAsUserInput="True"
             ></uwp:SearchableComboBox>
 
+            <TextBlock Text="Custom Fly-out Height" Margin="0,50,0,0"></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{Binding Path=Simple.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{Binding Path=Simple.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSourceEmptyMessage="Custom empty notification message..."
+                                    FlyoutMaxHeight="100"
+                                    ItemsSource="{Binding Path=Simple.List}"
+            ></uwp:SearchableComboBox>
 
         </StackPanel>
     </Grid>
