@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/hoveytech/SearchableComboBox/_apis/build/status/NuGet?branchName=master)](https://dev.azure.com/hoveytech/SearchableComboBox/_build/latest?definitionId=9?branchName=master)
+
 # Searchable ComboBox for UWP
 
 Single UserControl that includes:
