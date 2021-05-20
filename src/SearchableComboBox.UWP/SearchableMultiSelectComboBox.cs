@@ -512,7 +512,21 @@ namespace HoveyTech.SearchableComboBox.UWP
             if (ItemType == null)
                 throw new Exception($"{nameof(ItemType)} property is required.");
 
-            var typedList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(ItemType));
+            var selectedItems = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(ItemType));
+
+            if (SelectedItems != null)
+            {
+                var listType = typeof(IList<>).MakeGenericType(ItemType);
+                var validType = listType.IsInstanceOfType(SelectedItems);
+
+                if (!validType)
+                    throw new Exception($"SelectItems must be derived from IList<{listType}>.");
+                
+                var existingSelectedItems = (IList)SelectedItems;
+
+                foreach (var item in existingSelectedItems)
+                    selectedItems.Add(item);
+            }
 
             if (ItemsSource is IList itemsList)
             {
@@ -520,15 +534,22 @@ namespace HoveyTech.SearchableComboBox.UWP
                 {
                     var control = GetItemControlFromObject(item);
 
-                    if (control.Selected)
-                        typedList.Add(item);
+                    if (control == null)
+                        continue;
+
+                    var selectedItemIndex = selectedItems.IndexOf(item);
+                    
+                    if (control.Selected && selectedItemIndex == -1)
+                        selectedItems.Add(item);
+                    else if (!control.Selected && selectedItemIndex > -1)
+                        selectedItems.Remove(item);
                 }
             }
 
-            SelectedItems = typedList;
+            SelectedItems = selectedItems;
             UpdateLayout();
             _popup.VerticalOffset = ActualHeight;
-            _placeholderTextBlock.Visibility = typedList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
+            _placeholderTextBlock.Visibility = selectedItems.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
 
             if (ClearFilterTextOnSelection && FilterText != null)
                 FilterText = string.Empty;
