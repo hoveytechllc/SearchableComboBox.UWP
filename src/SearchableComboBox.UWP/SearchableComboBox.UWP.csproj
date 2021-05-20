@@ -127,10 +127,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Themes\Generic.xaml">
+    <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Content>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="SearchableComboBox.UWP.nuspec" />
