@@ -5,13 +5,18 @@
     <version>1.0.0</version>
     <authors>David Hovey</authors>
     <description>ComboBox that allows for user filtering.</description>
+
+    <dependencies>
+      <group targetFramework="uap10.0">
+        <dependency id="Microsoft.Toolkit.Uwp.UI.Controls" version="6.1.1" />
+      </group>
+    </dependencies>
   </metadata>
   <files>
     <file src="bin\Release\HoveyTech.SearchableComboBox.UWP.dll" target="lib\uap10.0" />
     <file src="bin\Release\HoveyTech.SearchableComboBox.UWP.pdb" target="lib\uap10.0" />
     <file src="bin\Release\HoveyTech.SearchableComboBox.UWP.pri" target="lib\uap10.0" />
 
-    <file src="bin\Release\HoveyTech.SearchableComboBox.UWP\HoveyTech.SearchableComboBox.UWP.xr.xml" target="lib\uap10.0\HoveyTech.SearchableComboBox.UWP" />
     <file src="bin\Release\HoveyTech.SearchableComboBox.UWP\Themes\Generic.xaml" target="lib\uap10.0\HoveyTech.SearchableComboBox.UWP\Themes" />
   </files>
 </package>
