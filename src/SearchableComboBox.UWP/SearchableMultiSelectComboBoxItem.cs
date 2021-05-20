@@ -1,14 +1,20 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
 namespace HoveyTech.SearchableComboBox.UWP
 {
-    public class SearchableComboBoxItem : ContentControl
+    public class SearchableMultiSelectComboBoxItem : ContentControl
     {
-        private readonly ISearchableComboxBox _parent;
+        private readonly SearchableMultiSelectComboBox _parent;
 
         public const string GridName = "LayoutRoot";
+        public const string CheckboxName = "IsSelectedCheckbox";
 
         public const string NormalStateName = "Normal";
         public const string PointerOverStateName = "PointerOver";
@@ -22,11 +28,12 @@ namespace HoveyTech.SearchableComboBox.UWP
 
         private Grid _grid;
         private bool _pressed;
+        private CheckBox _checkBox;
 
-        public SearchableComboBoxItem(ISearchableComboxBox parent)
+        public SearchableMultiSelectComboBoxItem(SearchableMultiSelectComboBox parent)
         {
             _parent = parent;
-            DefaultStyleKey = typeof(SearchableComboBoxItem);
+            DefaultStyleKey = typeof(SearchableMultiSelectComboBoxItem);
         }
 
         private bool _pointerEntered;
@@ -47,13 +54,18 @@ namespace HoveyTech.SearchableComboBox.UWP
             set
             {
                 _selected = value;
+                if (_checkBox != null)
+                    _checkBox.IsChecked = value;
+
                 UpdateStates();
             }
         }
 
         protected override void OnTapped(TappedRoutedEventArgs e)
         {
-            _parent.NotifyItemTapped(this);
+            Selected = !Selected;
+
+            _parent.OnSelectedItemChanged(this);
         }
 
         protected override void OnApplyTemplate()
@@ -61,7 +73,8 @@ namespace HoveyTech.SearchableComboBox.UWP
             base.OnApplyTemplate();
 
             _grid = GetTemplateChild(GridName) as Grid;
-
+            _checkBox = GetTemplateChild(CheckboxName) as CheckBox;
+            
             if (_grid != null)
             {
                 _grid.PointerEntered += GridOnPointerEntered;
@@ -69,7 +82,9 @@ namespace HoveyTech.SearchableComboBox.UWP
                 _grid.PointerPressed += GridOnPointerPressed;
                 _grid.PointerReleased += GridOnPointerReleased;
             }
+            
         }
+        
 
         private void GridOnPointerEntered(object sender, PointerRoutedEventArgs pointerRoutedEventArgs)
         {
