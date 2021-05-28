@@ -76,6 +76,7 @@
             <TextBlock Text="{Binding ItemsSelected}" Margin="0,7,0,0"></TextBlock>
 
             <uwp:SearchableMultiSelectComboBox  Margin="0,7,0,0"
+                                                Width="150"
                                                 HorizontalAlignment="Stretch" 
                                                 PlaceholderText="Select people..."
                                                 FilterPlaceholderText="Enter person's name..."
@@ -85,10 +86,10 @@
                                                 ItemsSource="{Binding Path=MultiSelect.List}">
                 <uwp:SearchableMultiSelectComboBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBlock Text="{Binding FirstName}"></TextBlock>
-                            <TextBlock Text="{Binding LastName}" Margin="7,0,0,0" Foreground="CornflowerBlue"></TextBlock>
-                        </StackPanel>
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap">
+                            <Run Text="{Binding FirstName}"></Run>
+                            <Run Text="{Binding LastName}" Foreground="CornflowerBlue"></Run>
+                        </TextBlock>
                     </DataTemplate>
                 </uwp:SearchableMultiSelectComboBox.ItemTemplate>
                 <uwp:SearchableMultiSelectComboBox.SelectedItemTemplate>
