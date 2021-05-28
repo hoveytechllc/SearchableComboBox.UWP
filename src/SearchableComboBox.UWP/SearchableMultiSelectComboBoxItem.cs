@@ -82,7 +82,11 @@ namespace HoveyTech.SearchableComboBox.UWP
                 _grid.PointerPressed += GridOnPointerPressed;
                 _grid.PointerReleased += GridOnPointerReleased;
             }
-            
+
+            if (_checkBox != null)
+                _checkBox.IsChecked = Selected;
+
+            UpdateStates();
         }
         
 

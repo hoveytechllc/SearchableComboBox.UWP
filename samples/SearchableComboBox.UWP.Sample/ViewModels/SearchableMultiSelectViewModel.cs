@@ -45,6 +45,12 @@ namespace SearchableComboBox.UWP.Sample.ViewModels
 
             foreach (var item in _initialItems)
                 List.Add(item);
+
+            _selectedEntities = new List<Person>()
+            {
+                _initialItems.ElementAt(0),
+                _initialItems.ElementAt(1),
+            };
         }
 
         public ObservableCollection<Person> List { get; } = new ObservableCollection<Person>();
