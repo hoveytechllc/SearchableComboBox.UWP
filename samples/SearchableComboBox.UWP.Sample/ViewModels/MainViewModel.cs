@@ -17,6 +17,7 @@ namespace SearchableComboBox.UWP.Sample.ViewModels
             LoadingIndicator = new SearchableListViewModel(mvxMainThreadDispatcher);
             FlexibleFilterText = new SearchableListViewModel(mvxMainThreadDispatcher);
             MultiSelect = new SearchableMultiSelectViewModel(mvxMainThreadDispatcher,
+                useDelay: true,
                 selectedItemsChanged: SelectedItemsChanged);
 
             SelectedItemsChanged();
@@ -50,7 +51,7 @@ namespace SearchableComboBox.UWP.Sample.ViewModels
         public SearchableListViewModel LoadingIndicator { get; }
 
         public SearchableListViewModel FlexibleFilterText { get; }
-        
+
         public SearchableMultiSelectViewModel MultiSelect { get; }
 
         public string ItemsSelected { get; set; }

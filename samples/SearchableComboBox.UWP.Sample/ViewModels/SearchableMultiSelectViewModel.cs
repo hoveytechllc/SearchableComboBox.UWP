@@ -25,33 +25,15 @@ namespace SearchableComboBox.UWP.Sample.ViewModels
             _useDelay = useDelay;
             _selectedItemsChanged = selectedItemsChanged;
 
-            //_initialItems = new List<Person>()
-            //    {
-            //        new Person() { FirstName = "Amya", LastName = "Vazquez" },
-            //        new Person() { FirstName = "Charlotte", LastName = "Serrano" },
-            //        new Person() { FirstName = "Brennen", LastName = "Bowman" },
-            //        new Person() { FirstName = "Arely", LastName = "Anderson" },
-            //        new Person() { FirstName = "Aron", LastName = "Barry" },
-            //        new Person() { FirstName = "Janelle", LastName = "Tanner" },
-            //        new Person() { FirstName = "Coleman", LastName = "Yates" },
-            //        new Person() { FirstName = "Zackary", LastName = "Sparks" },
-            //        new Person() { FirstName = "Boston", LastName = "Pitts" },
-            //        new Person() { FirstName = "Miley", LastName = "Haley" },
-            //        new Person() { FirstName = "Madelynn", LastName = "Frey" },
-            //        new Person() { FirstName = "Danna", LastName = "Snyder" }
-            //    }
-            //    .OrderBy(x => x.LastName)
-            //    .ToList();
-
             _initialItems = new List<Person>()
                 {
-                    new Person() { FirstName = "Amya", LastName = "Vazquez Vazquez" },
-                    new Person() { FirstName = "Charlotte", LastName = "Serrano Serrano" },
-                    new Person() { FirstName = "Brennen", LastName = "Bowman Vazquez" },
-                    new Person() { FirstName = "Arely", LastName = "Anderson Vazquez" },
-                    new Person() { FirstName = "Aron", LastName = "Barry Vazquez" },
-                    new Person() { FirstName = "Janelle", LastName = "Tanner Vazquez" },
-                    new Person() { FirstName = "Coleman", LastName = "Yates Vazquez" },
+                    new Person() { FirstName = "Amya", LastName = "Vazquez" },
+                    new Person() { FirstName = "Charlotte", LastName = "Serrano" },
+                    new Person() { FirstName = "Brennen", LastName = "Bowman" },
+                    new Person() { FirstName = "Arely", LastName = "Anderson" },
+                    new Person() { FirstName = "Aron", LastName = "Barry" },
+                    new Person() { FirstName = "Janelle", LastName = "Tanner" },
+                    new Person() { FirstName = "Coleman", LastName = "Yates" },
                     new Person() { FirstName = "Zackary", LastName = "Sparks" },
                     new Person() { FirstName = "Boston", LastName = "Pitts" },
                     new Person() { FirstName = "Miley", LastName = "Haley" },

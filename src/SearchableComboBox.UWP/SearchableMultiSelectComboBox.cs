@@ -25,6 +25,7 @@ namespace HoveyTech.SearchableComboBox.UWP
         private ProgressRing _progressRing;
         private TextBlock _noItemsTextBlock;
         private Button _dropdownIcon;
+        private Grid _popupGrid;
 
         private bool _hasFocus;
         private bool _pointerOver;
@@ -65,7 +66,8 @@ namespace HoveyTech.SearchableComboBox.UWP
             _popupBorder = GetTemplateChild(PopupBorderName) as Border;
             _itemsPresenter = GetTemplateChild(ItemsPresenterName) as ItemsPresenter;
             _dropdownIcon = GetTemplateChild("DropdownIcon") as Button;
-
+            _popupGrid = GetTemplateChild("PopupGrid") as Grid;
+            
             IsEnabledChanged += OnIsEnabledChanged;
             Tapped += OnElementTapped;
 
@@ -505,10 +507,12 @@ namespace HoveyTech.SearchableComboBox.UWP
 
             _hasFocus = true;
             UpdateStates();
-            UpdateItemsControlVisibility();
 
+            _popup.VerticalOffset = ActualHeight;
             _popup.IsOpen = true;
-            UpdateLayout();
+            _popupGrid.Width = ActualWidth;
+
+            UpdateItemsControlVisibility();
 
             _filterTextBox.Focus(FocusState.Programmatic);
             _filterTextBox.Focus(FocusState.Keyboard);

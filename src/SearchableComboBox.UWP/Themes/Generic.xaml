@@ -734,9 +734,8 @@
                                     AutomationProperties.AccessibilityView="Raw" />
                         </Button>
                         <Popup Grid.Column="0" Grid.ColumnSpan="2" x:Name="Popup" VerticalOffset="{TemplateBinding ActualHeight}"
-                               Width="{TemplateBinding ActualWidth}"
                                    HorizontalOffset="0">
-                            <Grid HorizontalAlignment="Stretch" Width="{TemplateBinding ActualWidth}">
+                            <Grid x:Name="PopupGrid" HorizontalAlignment="Stretch">
                                 <Border Background="{ThemeResource SystemControlBackgroundChromeMediumLowBrush}"
                                     BorderBrush="{ThemeResource SystemControlForegroundChromeHighBrush}"
                                     BorderThickness="{ThemeResource ComboBoxDropdownBorderThickness}"

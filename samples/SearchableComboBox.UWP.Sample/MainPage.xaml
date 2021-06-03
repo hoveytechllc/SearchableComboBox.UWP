@@ -83,6 +83,8 @@
                                                 ItemType="{Binding Path=MultiSelect.ItemType}"
                                                 SelectedItems="{Binding Path=MultiSelect.SelectedEntities, Mode=TwoWay}"
                                                 FilterText="{Binding Path=MultiSelect.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                UseLoadingProgressRing="True"
+                                                IsRefreshingItemsSource="{Binding Path=MultiSelect.IsSearching}"
                                                 ItemsSource="{Binding Path=MultiSelect.List}">
                 <uwp:SearchableMultiSelectComboBox.ItemTemplate>
                     <DataTemplate>
