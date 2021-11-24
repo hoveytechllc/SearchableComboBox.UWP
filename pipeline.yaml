@@ -1,0 +1,34 @@
+variables:
+  majorMinor: 3.0
+  # define b as a counter with the prefix as variable a, and seed as 100.
+  build: $[counter(variables['majorMinor'], 100)]
+
+stages:
+- stage: build
+  dependsOn: []
+  jobs:
+
+  - job: PackageNuGet
+    pool:
+      vmImage: windows-2022
+    steps:
+
+    - task: MSBuild@1
+      displayName: 'Pack Core'
+      inputs:
+        solution: 'src\SearchableComboBox\SearchableComboBox.csproj'
+        configuration: Release
+        msbuildArguments: '-Restore -t:Pack -p:DebugType=full -Verbosity:minimal -p:DebugSymbols=true -p:SourceLinkCreate=true -p:VersionPrefix=$(majorMinor).$(build) -p:OutputPath=$(Build.ArtifactStagingDirectory)\build'
+
+    - task: CopyFiles@2
+      displayName: "Copy nupkg"
+      inputs:
+        sourceFolder: $(Build.ArtifactStagingDirectory)\build
+        contents: '*.nupkg'
+        targetFolder: $(Build.ArtifactStagingDirectory)\drop 
+
+    - task: PublishBuildArtifacts@1
+      displayName: 'Publish Artifact: NuGet'
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)\drop'
+        ArtifactName: NuGet       
