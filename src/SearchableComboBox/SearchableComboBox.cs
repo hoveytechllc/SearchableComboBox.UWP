@@ -1,19 +1,22 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.ServiceModel.Channels;
-using Windows.Foundation;
-using Windows.System;
+﻿#if WINDOWS_UWP
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
-using IList = System.Collections.IList;
+#else
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Input;
+#endif
+using System.Collections;
+using System.Collections.Generic;
+using Windows.Foundation;
+using Windows.System;
 
-namespace HoveyTech.SearchableComboBox.UWP
+namespace HoveyTech.SearchableComboBox
 {
-    public class SearchableMultiSelectComboBox : ItemsControl
+    public class SearchableComboBox : ItemsControl, ISearchableComboxBox
     {
         private Border _popupBorder;
         private Button _popupButton;
@@ -24,8 +27,6 @@ namespace HoveyTech.SearchableComboBox.UWP
         private TextBlock _placeholderTextBlock;
         private ProgressRing _progressRing;
         private TextBlock _noItemsTextBlock;
-        private Button _dropdownIcon;
-        private Grid _popupGrid;
 
         private bool _hasFocus;
         private bool _pointerOver;
@@ -40,21 +41,19 @@ namespace HoveyTech.SearchableComboBox.UWP
         public const string NoItemsTextBlockName = "NoItemsTextBlock";
         public const string ItemsPresenterName = "ItemsPresenter";
 
-        public SearchableMultiSelectComboBox()
+        public SearchableComboBox()
         {
-            DefaultStyleKey = typeof(SearchableMultiSelectComboBox);
+            DefaultStyleKey = typeof(SearchableComboBox);
         }
 
         protected override void OnItemsChanged(object e)
         {
-            UpdateItemsControlVisibility();
+            UpdateItemsControlVisibility(this);
         }
 
         protected override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
-            //Height = double.MaxValue;
 
             _popupButton = GetTemplateChild(PopupButtonName) as Button;
             _placeholderTextBlock = GetTemplateChild(PlaceholderTextBlockName) as TextBlock;
@@ -65,15 +64,13 @@ namespace HoveyTech.SearchableComboBox.UWP
             _noItemsTextBlock = GetTemplateChild(NoItemsTextBlockName) as TextBlock;
             _popupBorder = GetTemplateChild(PopupBorderName) as Border;
             _itemsPresenter = GetTemplateChild(ItemsPresenterName) as ItemsPresenter;
-            _dropdownIcon = GetTemplateChild("DropdownIcon") as Button;
-            _popupGrid = GetTemplateChild("PopupGrid") as Grid;
-            
+
             IsEnabledChanged += OnIsEnabledChanged;
             Tapped += OnElementTapped;
 
             if (_filterTextBox != null)
             {
-                //_filterTextBox.LostFocus += HandleLostFocus;
+                _filterTextBox.LostFocus += HandleLostFocus;
                 _filterTextBox.KeyUp += FilterTextBoxOnKeyUp;
             }
 
@@ -81,86 +78,45 @@ namespace HoveyTech.SearchableComboBox.UWP
                 _selectedItemControl.Tapped += OnElementTapped;
             if (_placeholderTextBlock != null)
                 _placeholderTextBlock.Tapped += OnElementTapped;
-            if (_dropdownIcon != null)
-                _dropdownIcon.Tapped += DropdownIconOnTapped;
 
             ClosePopup();
-            UpdateItemsControlVisibility();
         }
 
-        private void DropdownIconOnTapped(object sender, TappedRoutedEventArgs e)
-        {
-            e.Handled = true;
+#region Dependency Properties
 
-            if (_popup.IsOpen)
-            {
-                ClosePopup();
-            }
-            else
-            {
-                ShowFilter();
-            }
-        }
-
-        #region Dependency Properties
-
-        public static readonly DependencyProperty ClearFilterTextOnSelectionProperty = DependencyProperty.Register(
-            nameof(ClearFilterTextOnSelection), typeof(bool), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(true));
-
-        public static readonly DependencyProperty SelectedItemTemplateProperty = DependencyProperty.Register(
-            nameof(SelectedItemTemplate), typeof(DataTemplate), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(null));
-
-        public static readonly DependencyProperty ItemTypeProperty = DependencyProperty.Register(
-            nameof(ItemType), typeof(Type), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(null));
+        public static readonly DependencyProperty InputScopeProperty = DependencyProperty.Register(
+           nameof(InputScope), typeof(object), typeof(SearchableComboBox), new PropertyMetadata(InputScopeNameValue.Text));
 
         public static readonly DependencyProperty IsRefreshingItemsSourceProperty = DependencyProperty.Register(
-           nameof(IsRefreshingItemsSource), typeof(bool), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(false, IsRefreshingItemsSourceChangedCallback));
+           nameof(IsRefreshingItemsSource), typeof(object), typeof(SearchableComboBox), new PropertyMetadata(false, IsRefreshingItemsSourceChangedCallback));
 
         public static readonly DependencyProperty UseLoadingProgressRingProperty = DependencyProperty.Register(
-           nameof(UseLoadingProgressRing), typeof(bool), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(false));
+           nameof(UseLoadingProgressRing), typeof(object), typeof(SearchableComboBox), new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsItemsSourceReadyProperty = DependencyProperty.Register(
-           nameof(IsItemsSourceReady), typeof(bool), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(true));
+           nameof(IsItemsSourceReady), typeof(object), typeof(SearchableComboBox), new PropertyMetadata(true));
 
-        public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.Register(
-           nameof(SelectedItems), typeof(object), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(null, SelectedItemsChangedCallback));
-
-        public static readonly DependencyProperty FilterPlaceholderTextProperty = DependencyProperty.Register(
-            nameof(FilterPlaceholderText), typeof(string), typeof(SearchableMultiSelectComboBox), new PropertyMetadata("Filter text..."));
+        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register(
+           nameof(SelectedItem), typeof(object), typeof(SearchableComboBox), new PropertyMetadata(null, SelectedItemChangedCallback));
 
         public static readonly DependencyProperty PlaceholderTextProperty = DependencyProperty.Register(
-           nameof(PlaceholderText), typeof(string), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(string.Empty));
+           nameof(PlaceholderText), typeof(string), typeof(SearchableComboBox), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty FilterTextProperty = DependencyProperty.Register(
-           nameof(FilterText), typeof(string), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(null, FilterTextChangedCallback));
+           nameof(FilterText), typeof(string), typeof(SearchableComboBox), new PropertyMetadata(null, FilterTextChangedCallback));
 
         public static readonly DependencyProperty ItemsSourceEmptyMessageProperty = DependencyProperty.Register(
-            nameof(ItemsSourceEmptyMessage), typeof(string), typeof(SearchableMultiSelectComboBox), new PropertyMetadata("No items..."));
+            nameof(ItemsSourceEmptyMessage), typeof(string), typeof(SearchableComboBox), new PropertyMetadata("No items..."));
+
+        public static readonly DependencyProperty UseFilterTextAsUserInputProperty = DependencyProperty.Register(
+            nameof(UseFilterTextAsUserInput), typeof(bool), typeof(SearchableComboBox), new PropertyMetadata(false));
 
         public static readonly DependencyProperty FlyoutMaxHeightProperty = DependencyProperty.Register(
-            nameof(FlyoutMaxHeight), typeof(int), typeof(SearchableMultiSelectComboBox), new PropertyMetadata(300));
+            nameof(FlyoutMaxHeight), typeof(int), typeof(SearchableComboBox), new PropertyMetadata(300));
 
-        #endregion
+#endregion
 
-        #region Properties
-
-        public bool ClearFilterTextOnSelection
-        {
-            get => (bool)GetValue(ClearFilterTextOnSelectionProperty);
-            set => SetValue(ClearFilterTextOnSelectionProperty, value);
-        }
-
-        public DataTemplate SelectedItemTemplate
-        {
-            get => (DataTemplate)GetValue(SelectedItemTemplateProperty);
-            set => SetValue(SelectedItemTemplateProperty, value);
-        }
-
-        public Type ItemType
-        {
-            get => (Type)GetValue(ItemTypeProperty);
-            set => SetValue(ItemTypeProperty, value);
-        }
+#region Properties
 
         public int FlyoutMaxHeight
         {
@@ -168,10 +124,22 @@ namespace HoveyTech.SearchableComboBox.UWP
             set => SetValue(FlyoutMaxHeightProperty, value);
         }
 
+        public bool UseFilterTextAsUserInput
+        {
+            get => (bool)GetValue(UseFilterTextAsUserInputProperty);
+            set => SetValue(UseFilterTextAsUserInputProperty, value);
+        }
+
         public string ItemsSourceEmptyMessage
         {
             get => (string)GetValue(ItemsSourceEmptyMessageProperty);
             set => SetValue(ItemsSourceEmptyMessageProperty, value);
+        }
+
+        public object InputScope
+        {
+            get { return GetValue(InputScopeProperty); }
+            set { SetValue(InputScopeProperty, value); }
         }
 
         public bool IsRefreshingItemsSource
@@ -186,16 +154,16 @@ namespace HoveyTech.SearchableComboBox.UWP
             set { SetValue(UseLoadingProgressRingProperty, value); }
         }
 
-        public bool IsItemsSourceReady
+        public object IsItemsSourceReady
         {
-            get { return (bool)GetValue(IsItemsSourceReadyProperty); }
+            get { return GetValue(IsItemsSourceReadyProperty); }
             set { SetValue(IsItemsSourceReadyProperty, value); }
         }
 
-        public object SelectedItems
+        public object SelectedItem
         {
-            get { return GetValue(SelectedItemsProperty); }
-            set { SetValue(SelectedItemsProperty, value); }
+            get { return GetValue(SelectedItemProperty); }
+            set { SetValue(SelectedItemProperty, value); }
         }
 
         public string PlaceholderText
@@ -204,21 +172,15 @@ namespace HoveyTech.SearchableComboBox.UWP
             set { SetValue(PlaceholderTextProperty, value); }
         }
 
-        public string FilterPlaceholderText
-        {
-            get { return (string)GetValue(FilterPlaceholderTextProperty); }
-            set { SetValue(FilterPlaceholderTextProperty, value); }
-        }
-
         public string FilterText
         {
             get { return (string)GetValue(FilterTextProperty); }
             set { SetValue(FilterTextProperty, value); }
         }
 
-        #endregion
+#endregion
 
-        #region Overrides
+#region Overrides
 
         protected override void OnKeyUp(KeyRoutedEventArgs e)
         {
@@ -255,26 +217,16 @@ namespace HoveyTech.SearchableComboBox.UWP
             UpdateStates();
         }
 
-        protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
-        {
-            base.PrepareContainerForItemOverride(element, item);
-
-            var control = (SearchableMultiSelectComboBoxItem) element;
-
-            var selectedItems = (SelectedItems as IList) ?? new List<object>();
-
-            control.Selected = selectedItems.IndexOf(item) > -1;
-        }
-
         protected override bool IsItemItsOwnContainerOverride(object item)
         {
-            return item is SearchableMultiSelectComboBoxItem;
+            return item is SearchableComboBoxItem;
         }
 
         protected override DependencyObject GetContainerForItemOverride()
         {
-            var item = new SearchableMultiSelectComboBoxItem(this);
+            var item = new SearchableComboBoxItem(this);
             item.FontSize = FontSize;
+
             return item;
         }
 
@@ -286,9 +238,9 @@ namespace HoveyTech.SearchableComboBox.UWP
             return base.ArrangeOverride(finalSize);
         }
 
-        #endregion
+#endregion
 
-        #region Events
+#region Events
 
         private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
@@ -302,6 +254,7 @@ namespace HoveyTech.SearchableComboBox.UWP
             if (key == VirtualKey.Escape)
             {
                 ClosePopup();
+                Focus(FocusState.Programmatic);
                 return;
             }
 
@@ -318,9 +271,9 @@ namespace HoveyTech.SearchableComboBox.UWP
             {
                 if (list.Count == 1)
                 {
-                    var control = GetItemControlFromObject(list[0]);
-                    control.Selected = !control.Selected;
-                    UpdateSelectedItems();
+                    SelectedItem = list[0];
+                    ClosePopup();
+                    this.Focus(FocusState.Programmatic);
                     return;
                 }
 
@@ -333,8 +286,9 @@ namespace HoveyTech.SearchableComboBox.UWP
 
                     if (control.IsPointerEntered)
                     {
-                        control.Selected = !control.Selected;
-                        UpdateSelectedItems();
+                        SelectedItem = item;
+                        ClosePopup();
+                        this.Focus(FocusState.Programmatic);
                         return;
                     }
                 }
@@ -344,7 +298,7 @@ namespace HoveyTech.SearchableComboBox.UWP
                 if (list.Count < 2) return;
 
                 int index = -1;
-                SearchableMultiSelectComboBoxItem pointerEnteredControl = null;
+                SearchableComboBoxItem pointerEnteredControl = null;
 
                 foreach (var item in list)
                 {
@@ -361,7 +315,7 @@ namespace HoveyTech.SearchableComboBox.UWP
                     }
                 }
 
-                SearchableMultiSelectComboBoxItem nextItem;
+                SearchableComboBoxItem nextItem;
 
                 if (pointerEnteredControl != null)
                     pointerEnteredControl.IsPointerEntered = false;
@@ -388,13 +342,12 @@ namespace HoveyTech.SearchableComboBox.UWP
 
         private static void IsRefreshingItemsSourceChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var comboBox = (SearchableMultiSelectComboBox)dependencyObject;
-            comboBox.UpdateItemsControlVisibility();
+            UpdateItemsControlVisibility((SearchableComboBox)dependencyObject);
         }
 
         private static void FilterTextChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var control = dependencyObject as SearchableMultiSelectComboBox;
+            var control = dependencyObject as SearchableComboBox;
 
             if (control == null)
                 return;
@@ -405,13 +358,25 @@ namespace HoveyTech.SearchableComboBox.UWP
             {
                 if (control._placeholderTextBlock != null)
                     control._placeholderTextBlock.Visibility = Visibility.Collapsed;
+
+                if (control.UseFilterTextAsUserInput)
+                    control.ClearSelection();
             }
         }
 
-        private static void SelectedItemsChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
+        private static void SelectedItemChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var control = (SearchableMultiSelectComboBox)dependencyObject;
-            control.UpdateItemsControlVisibility();
+            var control = (SearchableComboBox)dependencyObject;
+
+            if (control._placeholderTextBlock == null || control._selectedItemControl == null)
+                return;
+
+            var newSelection = e.NewValue;
+
+            if (newSelection != null && !string.IsNullOrEmpty(control.FilterText))
+                control.FilterText = null;
+
+            control.ClosePopup();
         }
 
         private void OnElementTapped(object sender, TappedRoutedEventArgs tappedRoutedEventArgs)
@@ -425,7 +390,7 @@ namespace HoveyTech.SearchableComboBox.UWP
             ClosePopup();
         }
 
-        #endregion
+#endregion
 
         private void UpdateStates()
         {
@@ -439,51 +404,21 @@ namespace HoveyTech.SearchableComboBox.UWP
                 VisualStateManager.GoToState(this, "Normal", false);
         }
 
-        private void UpdateItemsControlVisibility()
+        private static void UpdateItemsControlVisibility(SearchableComboBox control)
         {
-            var isItems = GetListInternal().Count > 0;
-            var loadingItems = UseLoadingProgressRing && IsRefreshingItemsSource;
+            if (control._itemsPresenter == null)
+                return;
 
-            if (_itemsPresenter != null)
-                _itemsPresenter.Visibility = loadingItems ? Visibility.Collapsed : Visibility.Visible;
-            if (_progressRing != null)
-                _progressRing.Visibility = loadingItems ? Visibility.Visible : Visibility.Collapsed;
-            if (_noItemsTextBlock != null)
-            {
-                _noItemsTextBlock.Visibility = isItems || loadingItems ? Visibility.Collapsed : Visibility.Visible;
-                _noItemsTextBlock.Text = ItemsSourceEmptyMessage;
-            }
+            var isItems = control.GetListInternal().Count > 0;
+            var loadingItems = control.UseLoadingProgressRing && control.IsRefreshingItemsSource;
 
-            UpdateLayout();
+            control._itemsPresenter.Visibility = loadingItems ? Visibility.Collapsed : Visibility.Visible;
+            control._progressRing.Visibility = loadingItems ? Visibility.Visible : Visibility.Collapsed;
+            control._noItemsTextBlock.Visibility = isItems || loadingItems ? Visibility.Collapsed : Visibility.Visible;
 
-            bool anySelected = false;
+            var placeHolderText = control.PlaceholderText ?? control.ItemsSourceEmptyMessage;
 
-            if (SelectedItems is IList selectedItems)
-            {
-                if (ItemsSource is IList itemsSource)
-                {
-                    foreach (var item in itemsSource)
-                    {
-                        var control = GetItemControlFromObject(item);
-
-                        if (control == null)
-                            continue;
-
-                        control.Selected = selectedItems.IndexOf(item) > -1;
-                    }
-
-                }
-
-                anySelected = selectedItems.Count > 0;
-            }
-
-            if (_placeholderTextBlock != null)
-            {
-                _placeholderTextBlock.Visibility = anySelected ? Visibility.Collapsed : Visibility.Visible;
-                _placeholderTextBlock.Text = (PlaceholderText ?? ItemsSourceEmptyMessage);
-            }
-
-            UpdateLayout();
+            control._noItemsTextBlock.Text = string.IsNullOrEmpty(control.FilterText) ? placeHolderText : control.ItemsSourceEmptyMessage;
         }
 
         private IList GetListInternal()
@@ -497,8 +432,23 @@ namespace HoveyTech.SearchableComboBox.UWP
         {
             _hasFocus = false;
             UpdateStates();
-
+            
             _popup.IsOpen = false;
+
+            _selectedItemControl.Visibility = SelectedItem != null ? Visibility.Visible : Visibility.Collapsed;
+
+            if (UseFilterTextAsUserInput)
+            {
+                _placeholderTextBlock.Visibility = SelectedItem == null && string.IsNullOrEmpty(_filterTextBox.Text) ? Visibility.Visible : Visibility.Collapsed;
+                _filterTextBox.Visibility = !string.IsNullOrEmpty(_filterTextBox.Text) ? Visibility.Visible : Visibility.Collapsed;
+            }
+            else
+            {
+                _placeholderTextBlock.Visibility = SelectedItem == null ? Visibility.Visible : Visibility.Collapsed;
+
+                _filterTextBox.Text = string.Empty;
+                _filterTextBox.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void ShowFilter()
@@ -508,67 +458,42 @@ namespace HoveyTech.SearchableComboBox.UWP
             _hasFocus = true;
             UpdateStates();
 
-            _popup.VerticalOffset = ActualHeight;
-            _popup.IsOpen = true;
-            _popupGrid.Width = ActualWidth;
+            _placeholderTextBlock.Visibility = Visibility.Collapsed;
+            _selectedItemControl.Visibility = Visibility.Collapsed;
+            _filterTextBox.Visibility = Visibility.Visible;
 
-            UpdateItemsControlVisibility();
+            UpdateItemsControlVisibility(this);
+
+            _popup.IsOpen = true;
+            UpdateLayout();
+
+            if (UseFilterTextAsUserInput
+                && !string.IsNullOrEmpty(_filterTextBox.Text)
+                && _filterTextBox.FocusState != FocusState.Keyboard)
+            {
+                _filterTextBox.SelectAll();
+            }
 
             _filterTextBox.Focus(FocusState.Programmatic);
             _filterTextBox.Focus(FocusState.Keyboard);
         }
 
-        public void OnSelectedItemChanged(SearchableMultiSelectComboBoxItem tappedItem)
+        public void NotifyItemTapped(SearchableComboBoxItem tappedItem)
         {
-            UpdateSelectedItems();
-        }
+            var list = (IList)ItemsSource;
+            if (list == null) return;
 
-        private void UpdateSelectedItems()
-        {
-            if (ItemType == null)
-                throw new Exception($"{nameof(ItemType)} property is required.");
-
-            var selectedItems = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(ItemType));
-
-            if (SelectedItems != null)
+            foreach (var item in list)
             {
-                var listType = typeof(IList<>).MakeGenericType(ItemType);
-                var validType = listType.IsInstanceOfType(SelectedItems);
+                SearchableComboBoxItem control = GetItemControlFromObject(item);
+                if (control == null) continue;
 
-                if (!validType)
-                    throw new Exception($"SelectItems must be derived from IList<{listType}>.");
-
-                var existingSelectedItems = (IList)SelectedItems;
-
-                foreach (var item in existingSelectedItems)
-                    selectedItems.Add(item);
+                control.Selected = tappedItem == control;
             }
 
-            if (ItemsSource is IList itemsList)
-            {
-                foreach (var item in itemsList)
-                {
-                    var control = GetItemControlFromObject(item);
-
-                    if (control == null)
-                        continue;
-
-                    var selectedItemIndex = selectedItems.IndexOf(item);
-
-                    if (control.Selected && selectedItemIndex == -1)
-                        selectedItems.Add(item);
-                    else if (!control.Selected && selectedItemIndex > -1)
-                        selectedItems.Remove(item);
-                }
-            }
-
-            SelectedItems = selectedItems;
-            UpdateLayout();
-            _popup.VerticalOffset = ActualHeight;
-            UpdateItemsControlVisibility();
-
-            if (ClearFilterTextOnSelection && FilterText != null)
-                FilterText = string.Empty;
+            SelectedItem = tappedItem.DataContext;
+            ClosePopup();
+            this.Focus(FocusState.Programmatic);
         }
 
         public void ClearSelection()
@@ -578,24 +503,23 @@ namespace HoveyTech.SearchableComboBox.UWP
 
             foreach (var item in list)
             {
-                SearchableMultiSelectComboBoxItem control = GetItemControlFromObject(item);
+                SearchableComboBoxItem control = GetItemControlFromObject(item);
                 if (control == null) continue;
 
                 control.Selected = false;
             }
 
-            var typedList = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(ItemType));
-            SelectedItems = typedList;
+            SelectedItem = null;
         }
 
-        private SearchableMultiSelectComboBoxItem GetItemControlFromIndex(int index)
+        private SearchableComboBoxItem GetItemControlFromIndex(int index)
         {
-            return ContainerFromIndex(index) as SearchableMultiSelectComboBoxItem;
+            return ContainerFromIndex(index) as SearchableComboBoxItem;
         }
 
-        private SearchableMultiSelectComboBoxItem GetItemControlFromObject(object item)
+        private SearchableComboBoxItem GetItemControlFromObject(object item)
         {
-            return ContainerFromItem(item) as SearchableMultiSelectComboBoxItem;
+            return ContainerFromItem(item) as SearchableComboBoxItem;
         }
     }
 }

@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Platform.Core;
+﻿using System.Linq;
 
-namespace SearchableComboBox.UWP.Sample.ViewModels
+namespace SearchableComboBox.Samples
 {
-    public class MainViewModel : MvxViewModel
+    public class MainViewModel : BaseViewModel
     {
-        public MainViewModel(IMvxMainThreadDispatcher mvxMainThreadDispatcher)
+        public MainViewModel()
         {
-            Simple = new SearchableListViewModel(mvxMainThreadDispatcher, useDelay: false);
-            LoadingIndicator = new SearchableListViewModel(mvxMainThreadDispatcher);
-            FlexibleFilterText = new SearchableListViewModel(mvxMainThreadDispatcher);
-            MultiSelect = new SearchableMultiSelectViewModel(mvxMainThreadDispatcher,
+            Simple = new SearchableListViewModel(useDelay: false);
+            LoadingIndicator = new SearchableListViewModel();
+            FlexibleFilterText = new SearchableListViewModel();
+            MultiSelect = new SearchableMultiSelectViewModel(
                 useDelay: true,
                 selectedItemsChanged: SelectedItemsChanged);
 
@@ -38,14 +31,7 @@ namespace SearchableComboBox.UWP.Sample.ViewModels
 
             RaisePropertyChanged(() => ItemsSelected);
         }
-
-        public override void ViewAppearing()
-        {
-            base.ViewAppearing();
-
-            SelectedItemsChanged();
-        }
-
+        
         public SearchableListViewModel Simple { get; }
 
         public SearchableListViewModel LoadingIndicator { get; }

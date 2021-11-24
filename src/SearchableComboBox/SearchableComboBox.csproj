@@ -1,0 +1,52 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras">
+	<PropertyGroup>
+		<TargetFrameworks>uap10.0.19041.0;net5.0-windows10.0.19041</TargetFrameworks>
+	</PropertyGroup>
+
+	<PropertyGroup>
+		<AssemblyName>HoveyTech.SearchableComboBox</AssemblyName>
+		<RootNamespace>HoveyTech.SearchableComboBox</RootNamespace>
+		<Description>Searchable combobox control for UWP &amp; WinUI 3.</Description>
+		<GenerateLibraryLayout Condition="$(TargetFramework.StartsWith('uap'))">true</GenerateLibraryLayout>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.StartsWith('uap'))">
+		<DefineConstants>$(DefineConstants);NETFX_CORE;XAML;WINDOWS;WINDOWS_UWP;UWP</DefineConstants>
+		<TargetPlatformVersion>10.0.19041.0</TargetPlatformVersion>
+		<TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+	</PropertyGroup>
+
+	<!--<ItemGroup>
+		<Page Include="**\*.xaml" SubType="Designer" Generator="MSBuild:Compile" />
+	</ItemGroup>-->
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+		<PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls.Primitives" Version="7.1.2" />
+
+		<Page Include="Themes\Generic.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</Page>
+	</ItemGroup>
+
+	<PropertyGroup Condition=" $(TargetFramework.StartsWith('net5.0-windows')) ">
+		<TargetPlatformMinVersion>10.0.17763</TargetPlatformMinVersion>
+		<RootNamespace>Hoveytech.SearchableComboBox</RootNamespace>
+		<UseWinUI>true</UseWinUI>
+		<EnableDefaultPageItems>false</EnableDefaultPageItems>
+	</PropertyGroup>
+
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net5.0-windows')) ">
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.0"  />
+		<PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.22000.194" />
+		<PackageReference Include="CommunityToolkit.WinUI.UI.Controls.Primitives" Version="7.1.2" />
+
+		<None Include="Themes\Generic.xaml" />
+		<Page Include="Themes\Generic.xaml">
+			<Generator>MSBuild:Compile</Generator>
+			<SubType>Designer</SubType>
+		</Page>
+
+	</ItemGroup>
+
+</Project>

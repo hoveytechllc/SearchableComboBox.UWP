@@ -2,24 +2,18 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using MvvmCross.Core.ViewModels;
-using MvvmCross.Platform.Core;
 
-namespace SearchableComboBox.UWP.Sample.ViewModels
+namespace SearchableComboBox.Samples
 {
-    public class SearchableListViewModel : MvxViewModel
+    public class SearchableListViewModel : BaseViewModel
     {
-        private readonly IMvxMainThreadDispatcher _mvxMainThreadDispatcher;
         private readonly bool _useDelay;
 
         private readonly IList<string> _initialItems;
 
-        public SearchableListViewModel(IMvxMainThreadDispatcher mvxMainThreadDispatcher,
-            bool useDelay = true)
+        public SearchableListViewModel(bool useDelay = true)
         {
-            _mvxMainThreadDispatcher = mvxMainThreadDispatcher;
             _useDelay = useDelay;
 
             _initialItems = new List<string>()
@@ -39,6 +33,7 @@ namespace SearchableComboBox.UWP.Sample.ViewModels
                 }.OrderBy(x => x)
                 .ToList();
 
+            RaisePropertyChanged(() => List);
         }
         
         public ObservableCollection<string> List { get; } = new ObservableCollection<string>();
@@ -64,7 +59,7 @@ namespace SearchableComboBox.UWP.Sample.ViewModels
                 .Take(10)
                 .ToList();
 
-            _mvxMainThreadDispatcher.RequestMainThreadAction(() =>
+ MainThreadInvoker.Invoke(() =>
             {
                 List.Clear();
                 foreach (var item in items)

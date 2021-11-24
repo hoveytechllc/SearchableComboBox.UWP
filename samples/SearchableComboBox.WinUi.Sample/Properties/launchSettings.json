@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SearchableComboBox.WinUi.Sample (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "SearchableComboBox.WinUi.Sample (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
