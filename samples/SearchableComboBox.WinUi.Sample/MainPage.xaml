@@ -1,0 +1,188 @@
+﻿<Page
+    x:Class="SearchableComboBox.WinUi.Sample.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:SearchableComboBox.WinUi.Sample"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uwp="using:HoveyTech.SearchableComboBox"
+    xmlns:samples="using:SearchableComboBox.Samples"
+    mc:Ignorable="d">
+
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.Resources>
+            <SolidColorBrush x:Key="Label">DimGray</SolidColorBrush>
+        </Grid.Resources>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Grid.Column="0" Width="300" Margin="30,30,30,0"
+                    HorizontalAlignment="Left">
+            <TextBlock Text="Requested theme:" Foreground="{StaticResource Label}"></TextBlock>
+            <ComboBox x:Name="ThemeComboBox" HorizontalAlignment="Stretch"
+                      ItemsSource="{x:Bind Path=ViewModel.Themes}"
+                      SelectionChanged="OnThemeChanged">
+            </ComboBox>
+
+            <TextBlock Text="Sample textbox:" Foreground="{StaticResource Label}" Margin="0,15,0,0"></TextBlock>
+            <TextBox PlaceholderText="Sample text..."></TextBox>
+
+            <TextBlock Text="Disabled textbox:" Foreground="{StaticResource Label}" Margin="0,15,0,0"></TextBlock>
+            <TextBox Text="Sample text..." IsEnabled="False"></TextBox>
+        </StackPanel>
+
+        <StackPanel Grid.Row="0" Grid.Column="1" Width="300" Margin="0,30,0,0"
+                    HorizontalAlignment="Left">
+            <Button>Sample button</Button>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical"  Margin="30,30,30,0" Width="300"
+                    HorizontalAlignment="Left">
+            <TextBlock Text="Simple searchable:" Foreground="{StaticResource Label}"></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{x:Bind Path=ViewModel.Simple.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{x:Bind Path=ViewModel.Simple.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSourceEmptyMessage="Custom empty notification message..."
+                                    ItemsSource="{x:Bind Path=ViewModel.Simple.List, Mode=OneWay}">
+
+            </uwp:SearchableComboBox>
+
+            <TextBlock Text="Loading indicator:" Margin="0,50,0,0" Foreground="{StaticResource Label}"></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{x:Bind Path=ViewModel.LoadingIndicator.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{x:Bind Path=ViewModel.LoadingIndicator.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{x:Bind Path=ViewModel.LoadingIndicator.List}"
+                                    ItemsSourceEmptyMessage="{x:Bind Path=ViewModel.LoadingIndicator.NoItemsMessage}"
+                                    UseLoadingProgressRing="True"
+                                    PlaceholderText="Enter filter to see indicator..."
+                                    IsRefreshingItemsSource="{x:Bind Path=ViewModel.LoadingIndicator.IsSearching, Mode=OneWay}" >
+
+            </uwp:SearchableComboBox>
+
+            <TextBlock Text="Flexible FilterText: " Margin="0,50,0,0"></TextBlock>
+            <TextBlock><Run Text="SelectedItem: " Foreground="{StaticResource Label}"></Run><Run Text="{x:Bind Path=ViewModel.FlexibleFilterText.SelectedEntity, Mode=OneWay}"></Run></TextBlock>
+            <TextBlock><Run Text="FilterText: " Foreground="{StaticResource Label}"></Run><Run Text="{x:Bind Path=ViewModel.FlexibleFilterText.FilterText, Mode=OneWay}"></Run></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{x:Bind Path=ViewModel.FlexibleFilterText.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{x:Bind Path=ViewModel.FlexibleFilterText.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSource="{x:Bind Path=ViewModel.FlexibleFilterText.List, Mode=OneWay}"
+                                    ItemsSourceEmptyMessage="{x:Bind Path=ViewModel.FlexibleFilterText.NoItemsMessage}"
+                                    UseLoadingProgressRing="True"
+                                    PlaceholderText="Type item or select from results..."
+                                    IsRefreshingItemsSource="{x:Bind Path=ViewModel.FlexibleFilterText.IsSearching, Mode=OneWay}"
+                                    UseFilterTextAsUserInput="True"
+            ></uwp:SearchableComboBox>
+
+            <TextBlock Text="Custom Fly-out Height" Margin="0,50,0,0" Foreground="{StaticResource Label}"></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{x:Bind Path=ViewModel.Simple.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{x:Bind Path=ViewModel.Simple.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    ItemsSourceEmptyMessage="Custom empty notification message..."
+                                    FlyoutMaxHeight="100"
+                                    ItemsSource="{x:Bind Path=ViewModel.Simple.List}"
+            ></uwp:SearchableComboBox>
+
+            <TextBlock Text="Disabled state" Margin="0,50,0,0" Foreground="{StaticResource Label}"></TextBlock>
+            <uwp:SearchableComboBox HorizontalAlignment="Stretch"
+                                    SelectedItem="{x:Bind Path=ViewModel.Simple.SelectedEntity, Mode=TwoWay}"
+                                    FilterText="{x:Bind Path=ViewModel.Simple.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                    IsEnabled="False"
+                                    ItemsSource="{x:Bind Path=ViewModel.Simple.List, Mode=OneWay}"
+            ></uwp:SearchableComboBox>
+        </StackPanel>
+
+
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical"  Margin="0,30,0,0" Width="300"
+                    HorizontalAlignment="Left">
+
+            <TextBlock Text="Multi-select searchable:" Foreground="{StaticResource Label}"></TextBlock>
+
+            <TextBlock Text="{x:Bind Path=ViewModel.ItemsSelected, Mode=OneWay}" Margin="0,7,0,0" Foreground="{StaticResource Label}"></TextBlock>
+
+            <uwp:SearchableMultiSelectComboBox  Margin="0,7,0,0"
+                                                HorizontalAlignment="Stretch" 
+                                                PlaceholderText="Select people..."
+                                                FilterPlaceholderText="Enter person's name..."
+                                                ItemType="{x:Bind Path=ViewModel.MultiSelect.ItemType}"
+                                                SelectedItems="{x:Bind Path=ViewModel.MultiSelect.SelectedEntities, Mode=TwoWay}"
+                                                FilterText="{x:Bind Path=ViewModel.MultiSelect.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                UseLoadingProgressRing="True"
+                                                IsRefreshingItemsSource="{x:Bind Path=ViewModel.MultiSelect.IsSearching, Mode=OneWay}"
+                                                ItemsSource="{x:Bind Path=ViewModel.MultiSelect.List, Mode=OneWay}">
+            </uwp:SearchableMultiSelectComboBox>
+
+            <TextBlock Text="Disabled Multi-select:" Margin="0,15,0,0"></TextBlock>
+
+            <uwp:SearchableMultiSelectComboBox  Margin="0,7,0,0"
+                                                IsEnabled="False"
+                                                HorizontalAlignment="Stretch" 
+                                                PlaceholderText="Select people..."
+                                                FilterPlaceholderText="Enter person's name..."
+                                                ItemType="{x:Bind Path=ViewModel.MultiSelect.ItemType}"
+                                                SelectedItems="{x:Bind Path=ViewModel.MultiSelect.SelectedEntities, Mode=TwoWay}"
+                                                FilterText="{x:Bind Path=ViewModel.MultiSelect.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                UseLoadingProgressRing="True"
+                                                IsRefreshingItemsSource="{x:Bind Path=ViewModel.MultiSelect.IsSearching, Mode=OneWay}"
+                                                ItemsSource="{x:Bind Path=ViewModel.MultiSelect.List, Mode=OneWay}">
+                <uwp:SearchableMultiSelectComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="samples:Person" >
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap">
+                            <Run Text="{x:Bind FirstName}"></Run>
+                            <Run Text="{x:Bind LastName}" Foreground="CornflowerBlue"></Run>
+                        </TextBlock>
+                    </DataTemplate>
+                </uwp:SearchableMultiSelectComboBox.ItemTemplate>
+                <uwp:SearchableMultiSelectComboBox.SelectedItemTemplate>
+                    <DataTemplate x:DataType="samples:Person" >
+                        <Grid Margin="0,0,7,6">
+                            <Border Background="LightGray" CornerRadius="3"></Border>
+                            <TextBlock Text="{x:Bind FirstName}" Padding="3,1,3,1" />
+                        </Grid>
+                    </DataTemplate>
+                </uwp:SearchableMultiSelectComboBox.SelectedItemTemplate>
+            </uwp:SearchableMultiSelectComboBox>
+
+            <TextBlock Text="Custom templates:" Foreground="{StaticResource Label}"></TextBlock>
+
+            <uwp:SearchableMultiSelectComboBox  Margin="0,7,0,0"
+                                                HorizontalAlignment="Stretch" 
+                                                PlaceholderText="Select people..."
+                                                FilterPlaceholderText="Enter person's name..."
+                                                ItemType="{x:Bind Path=ViewModel.MultiSelect.ItemType}"
+                                                SelectedItems="{x:Bind Path=ViewModel.MultiSelect.SelectedEntities, Mode=TwoWay}"
+                                                FilterText="{x:Bind Path=ViewModel.MultiSelect.FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                UseLoadingProgressRing="True"
+                                                IsRefreshingItemsSource="{x:Bind Path=ViewModel.MultiSelect.IsSearching, Mode=OneWay}"
+                                                ItemsSource="{x:Bind Path=ViewModel.MultiSelect.List, Mode=OneWay}">
+                <uwp:SearchableMultiSelectComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="samples:Person" >
+                        <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap">
+                            <Run Text="{x:Bind FirstName}"></Run>
+                            <Run Text="{x:Bind LastName}" Foreground="CornflowerBlue"></Run>
+                        </TextBlock>
+                    </DataTemplate>
+                </uwp:SearchableMultiSelectComboBox.ItemTemplate>
+                <uwp:SearchableMultiSelectComboBox.SelectedItemTemplate>
+                    <DataTemplate x:DataType="samples:Person" >
+                        <Grid Margin="0,0,7,6">
+                            <Border Background="LightGray" CornerRadius="3"></Border>
+                            <TextBlock Text="{x:Bind FirstName}" Padding="3,1,3,1" />
+                        </Grid>
+                    </DataTemplate>
+                </uwp:SearchableMultiSelectComboBox.SelectedItemTemplate>
+            </uwp:SearchableMultiSelectComboBox>
+
+        </StackPanel>
+    </Grid>
+</Page>
+

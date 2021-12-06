@@ -108,5 +108,7 @@ namespace SearchableComboBox.Samples
                 RaisePropertyChanged(() => IsSearching);
             }
         }
+
+        public string NoItemsMessage => "No-one found...";
     }
 }

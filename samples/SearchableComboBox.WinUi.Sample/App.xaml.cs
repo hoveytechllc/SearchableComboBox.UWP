@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using SearchableComboBox.Samples;
 
 namespace SearchableComboBox.WinUi.Sample
@@ -26,7 +27,12 @@ namespace SearchableComboBox.WinUi.Sample
         {
             BaseViewModel.Initialize(this);
 
-            m_window = new MainWindow();
+            m_window = new Window();
+
+            var frame = new Frame();
+            frame.Navigate(typeof(MainPage));
+            m_window.Content = frame;
+
             m_window.Activate();
         }
 

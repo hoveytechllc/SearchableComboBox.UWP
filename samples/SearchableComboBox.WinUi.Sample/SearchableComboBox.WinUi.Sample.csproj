@@ -9,6 +9,9 @@
     <UseWinUI>true</UseWinUI>
     <EnablePreviewMsixTooling>true</EnablePreviewMsixTooling>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="MainPage.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -36,5 +39,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\SearchableComboBox\SearchableComboBox.csproj" />
     <ProjectReference Include="..\SearchableComboBox.Samples\SearchableComboBox.Samples.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Update="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 </Project>

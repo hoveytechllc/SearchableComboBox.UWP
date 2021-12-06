@@ -1,5 +1,5 @@
 variables:
-  majorMinor: 3.0
+  majorMinor: 3.1
   # define b as a counter with the prefix as variable a, and seed as 100.
   build: $[counter(variables['majorMinor'], 100)]
 

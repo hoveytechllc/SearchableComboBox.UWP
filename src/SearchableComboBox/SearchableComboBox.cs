@@ -1,14 +1,7 @@
-﻿#if WINDOWS_UWP
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
-#else
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
-#endif
 using System.Collections;
 using System.Collections.Generic;
 using Windows.Foundation;
@@ -67,6 +60,7 @@ namespace HoveyTech.SearchableComboBox
 
             IsEnabledChanged += OnIsEnabledChanged;
             Tapped += OnElementTapped;
+            ActualThemeChanged += SearchableComboBox_ActualThemeChanged;
 
             if (_filterTextBox != null)
             {
@@ -78,11 +72,16 @@ namespace HoveyTech.SearchableComboBox
                 _selectedItemControl.Tapped += OnElementTapped;
             if (_placeholderTextBlock != null)
                 _placeholderTextBlock.Tapped += OnElementTapped;
-
+            
             ClosePopup();
         }
 
-#region Dependency Properties
+        private void SearchableComboBox_ActualThemeChanged(FrameworkElement sender, object args)
+        {
+            _popup.RequestedTheme = ActualTheme;
+        }
+        
+        #region Dependency Properties
 
         public static readonly DependencyProperty InputScopeProperty = DependencyProperty.Register(
            nameof(InputScope), typeof(object), typeof(SearchableComboBox), new PropertyMetadata(InputScopeNameValue.Text));
@@ -419,6 +418,9 @@ namespace HoveyTech.SearchableComboBox
             var placeHolderText = control.PlaceholderText ?? control.ItemsSourceEmptyMessage;
 
             control._noItemsTextBlock.Text = string.IsNullOrEmpty(control.FilterText) ? placeHolderText : control.ItemsSourceEmptyMessage;
+
+            if (control._progressRing.Visibility == Visibility.Visible)
+                control._progressRing.IsActive = true;
         }
 
         private IList GetListInternal()
@@ -465,6 +467,10 @@ namespace HoveyTech.SearchableComboBox
             UpdateItemsControlVisibility(this);
 
             _popup.IsOpen = true;
+            
+            if (_popupBorder != null)
+                _popupBorder.RequestedTheme = ActualTheme;
+
             UpdateLayout();
 
             if (UseFilterTextAsUserInput

@@ -7,13 +7,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2C4E40D4-761
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{16D2EE2E-6338-4B5E-B280-CC169E3F6437}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchableComboBox.UWP.Sample", "samples\SearchableComboBox.UWP.Sample\SearchableComboBox.UWP.Sample.csproj", "{230F1982-5107-41A8-B109-933F48B15302}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchableComboBox", "src\SearchableComboBox\SearchableComboBox.csproj", "{0CD0745A-A0C9-4F61-B17E-01044FE1B91A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchableComboBox.WinUi.Sample", "samples\SearchableComboBox.WinUi.Sample\SearchableComboBox.WinUi.Sample.csproj", "{03FB76FD-3B1E-400C-A08D-7C160B5313A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SearchableComboBox.Samples", "samples\SearchableComboBox.Samples\SearchableComboBox.Samples.csproj", "{ADEB398B-DBE4-4E0F-8F62-12886C507340}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SearchableComboBox.Samples", "samples\SearchableComboBox.Samples\SearchableComboBox.Samples.csproj", "{ADEB398B-DBE4-4E0F-8F62-12886C507340}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,34 +27,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|Any CPU.Build.0 = Debug|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|Any CPU.Deploy.0 = Debug|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|ARM.ActiveCfg = Debug|ARM
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|ARM.Build.0 = Debug|ARM
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|ARM.Deploy.0 = Debug|ARM
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|arm64.ActiveCfg = Debug|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|arm64.Build.0 = Debug|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|arm64.Deploy.0 = Debug|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|x64.ActiveCfg = Debug|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|x64.Build.0 = Debug|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|x64.Deploy.0 = Debug|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|x86.ActiveCfg = Debug|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|x86.Build.0 = Debug|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Debug|x86.Deploy.0 = Debug|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|Any CPU.ActiveCfg = Release|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|ARM.ActiveCfg = Release|ARM
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|ARM.Build.0 = Release|ARM
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|ARM.Deploy.0 = Release|ARM
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|arm64.ActiveCfg = Release|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|arm64.Build.0 = Release|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|arm64.Deploy.0 = Release|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|x64.ActiveCfg = Release|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|x64.Build.0 = Release|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|x64.Deploy.0 = Release|x64
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|x86.ActiveCfg = Release|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|x86.Build.0 = Release|x86
-		{230F1982-5107-41A8-B109-933F48B15302}.Release|x86.Deploy.0 = Release|x86
 		{0CD0745A-A0C9-4F61-B17E-01044FE1B91A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CD0745A-A0C9-4F61-B17E-01044FE1B91A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CD0745A-A0C9-4F61-B17E-01044FE1B91A}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -132,7 +102,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{230F1982-5107-41A8-B109-933F48B15302} = {16D2EE2E-6338-4B5E-B280-CC169E3F6437}
 		{0CD0745A-A0C9-4F61-B17E-01044FE1B91A} = {2C4E40D4-7616-4F0C-B200-914BE4767C12}
 		{03FB76FD-3B1E-400C-A08D-7C160B5313A5} = {16D2EE2E-6338-4B5E-B280-CC169E3F6437}
 		{ADEB398B-DBE4-4E0F-8F62-12886C507340} = {16D2EE2E-6338-4B5E-B280-CC169E3F6437}

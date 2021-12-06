@@ -2,19 +2,11 @@
 using System.Collections.Generic;
 using Windows.Foundation;
 using Windows.System;
-using IList = System.Collections.IList;
-
-#if WINDOWS_UWP
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Input;
-#else
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Input;
-#endif
+using IList = System.Collections.IList;
 
 namespace HoveyTech.SearchableComboBox
 {
@@ -88,9 +80,15 @@ namespace HoveyTech.SearchableComboBox
                 _placeholderTextBlock.Tapped += OnElementTapped;
             if (_dropdownIcon != null)
                 _dropdownIcon.Tapped += DropdownIconOnTapped;
-
+            if (_popup != null)
+                _popup.Opened += PopupOnOpened;
             ClosePopup();
             UpdateItemsControlVisibility();
+        }
+
+        private void PopupOnOpened(object? sender, object e)
+        {
+            _popup.RequestedTheme = RequestedTheme;
         }
 
         private void DropdownIconOnTapped(object sender, TappedRoutedEventArgs e)
@@ -516,6 +514,11 @@ namespace HoveyTech.SearchableComboBox
             _popup.VerticalOffset = ActualHeight;
             _popup.IsOpen = true;
             _popupGrid.Width = ActualWidth;
+
+            if (_popupBorder != null)
+                _popupBorder.RequestedTheme = ActualTheme;
+            if (_popupGrid != null)
+                _popupGrid.RequestedTheme = ActualTheme;
 
             UpdateItemsControlVisibility();
 

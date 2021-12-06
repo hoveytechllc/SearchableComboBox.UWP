@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using SearchableComboBox.Samples;
 
 // To learn more about WinUI, the WinUI project structure,
@@ -14,9 +15,6 @@ namespace SearchableComboBox.WinUi.Sample
         public MainWindow()
         {
             this.InitializeComponent();
-
-            if (Content is FrameworkElement element)
-                element.DataContext = new MainViewModel();
         }
     }
 }

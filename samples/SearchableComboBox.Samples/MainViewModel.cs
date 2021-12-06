@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace SearchableComboBox.Samples
 {
@@ -41,5 +42,7 @@ namespace SearchableComboBox.Samples
         public SearchableMultiSelectViewModel MultiSelect { get; }
 
         public string ItemsSelected { get; set; }
+
+        public List<string> Themes { get; } = new List<string>() {"Default", "Light", "Dark"};
     }
 }
